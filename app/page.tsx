@@ -10,7 +10,12 @@ import axios from "axios";
 export default function Home() {
   const searchParams = useSearchParams();
   const invitedBy = searchParams.get("invitedBy");
-  const [inviter, setInviter] = useState(null);
+  interface Inviter {
+    username: string;
+    score: number;
+  }
+
+  const [inviter, setInviter] = useState<Inviter | null>(null);
 
   useEffect(() => {
     if (invitedBy) {
