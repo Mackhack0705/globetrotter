@@ -4,8 +4,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Confetti from "react-confetti";
 
+interface Destination {
+    City: string;
+    Country: string;
+    'Cryptic Clues': string[];
+    'Fun Facts': string[];
+    Trivia: string[];
+}
+
 export default function Home() {
-    const [destination, setDestination] = useState(null);
+    const [destination, setDestination] = useState<Destination | null>(null);
     const [userAnswer, setUserAnswer] = useState("");
     const [isCorrect, setIsCorrect] = useState(null);
     const [score, setScore] = useState({ correct: 0, incorrect: 0 });
@@ -13,6 +21,7 @@ export default function Home() {
 
     const fetchRandomDestination = async () => {
         const response = await axios.get("http://localhost:3000/api/randomDestination");
+        setUserAnswer("");
         setDestination(response.data);
         setIsCorrect(null);
         setShowConfetti(false);
@@ -22,12 +31,14 @@ export default function Home() {
         fetchRandomDestination();
     }, []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await axios.post("/api/check-answer", {
-            city: destination.city,
+        
+        const response = await axios.post("http://localhost:3000/api/checkAnswer", {
+            city: destination?.City,
             userAnswer,
         });
+        
         setIsCorrect(response.data.isCorrect);
         setShowConfetti(response.data.isCorrect);
 
@@ -44,8 +55,8 @@ export default function Home() {
             {destination && (
                 <div>
                     <h2>Guess the Destination!</h2>
-                    <p>{destination.clues[0]}</p>
-                    <p>{destination.clues[1]}</p>
+                    <p>{destination['Cryptic Clues'][0]}</p>
+                    <p>{destination['Cryptic Clues'][1]}</p>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -54,21 +65,21 @@ export default function Home() {
                             onChange={(e) => setUserAnswer(e.target.value)}
                             style={{ padding: "5px", marginRight: "10px" }}
                         />
-                        <button type="submit" style={{ padding: "5px 10px" }}>Submit</button>
+                        <button type="submit" className="cursor-pointer" style={{ padding: "5px 10px" }}>Submit</button>
                     </form>
                     {isCorrect !== null && (
                         <div>
                             {isCorrect ? (
                                 <>
-                                    <p>🎉 Correct! Here&apos;s a fun fact: {destination.fun_fact[0]}</p>
+                                    <p>🎉 Correct! Here&apos;s a fun fact: {destination["Fun Facts"][0]}</p>
                                     {showConfetti && <Confetti />}
                                 </>
                             ) : (
-                                <p>😢 Incorrect! Here&apos;s a fun fact: {destination.fun_fact[0]}</p>
+                                <p>😢 Incorrect! Here&apos;s a fun fact: {destination["Fun Facts"][0]}</p>
                             )}
                         </div>
                     )}
-                    <button onClick={fetchRandomDestination} style={{ marginTop: "10px", padding: "5px 10px" }}>
+                    <button onClick={fetchRandomDestination} className="cursor-pointer" style={{ marginTop: "10px", padding: "5px 10px" }}>
                         Next Destination
                     </button>
                 </div>

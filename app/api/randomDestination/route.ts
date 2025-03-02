@@ -1,4 +1,3 @@
-import { fs } from 'fs';
 import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
@@ -11,10 +10,8 @@ export async function GET() {
         
         await client.connect();
         const database = client.db("globetrotter");
-        console.log(database);
         
         const collection = database.collection("destinations");
-        console.log(collection);
         
 
         const count = await collection.countDocuments();
