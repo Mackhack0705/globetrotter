@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-const ChallengeFriend = ({ username }: { username: string}) => {
+const ChallengeFriend = () => {
   const [inviteLink, setInviteLink] = useState("");
 
   const handleGenerateInvite = async () => {
+    console.log('hi there');
+    
     try {
-      const response = await axios.post("/api/generate-invite", { username });
+      const response = await axios.post("/api/generate-invite");
       setInviteLink(response.data.inviteLink);
     } catch (error) {
       console.error("Error generating invite:", error);
@@ -23,11 +27,14 @@ const ChallengeFriend = ({ username }: { username: string}) => {
 
   return (
     <div>
-      <button onClick={handleGenerateInvite}>Challenge a Friend</button>
+      <div className="w-1/4 absolute left-2/5 flex justify-between">
+        <Input placeholder="Enter friend's username" className="w-56" />
+        <Button className="cursor-pointer" onClick={handleGenerateInvite}>Challenge a Friend</Button>
+      </div>
       {inviteLink && (
         <div>
           <p>Invite Link: {inviteLink}</p>
-          <button onClick={handleShare}>Share via WhatsApp</button>
+          <Button onClick={handleShare}>Share via WhatsApp</Button>
         </div>
       )}
     </div>

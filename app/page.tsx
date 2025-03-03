@@ -26,16 +26,17 @@ export default function Home() {
   }, [invitedBy]);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Globetrotter Challenge</h1>
+    <div style={{ padding: "20px" }} className="h-screen relative">
+      <h1 className="text-5xl text-center">Globetrotter Challenge</h1>
       {inviter && (
         <p>You were invited by {inviter.username} (Score: {inviter.score})</p>
       )}
-      {localStorage.getItem("username") ?
-        <PlayGame />
+      {
+        localStorage.getItem("username")
+        ? <PlayGame />
         : <Signup />
-    }  
-      <ChallengeFriend username="exampleUsername" />
+      }  
+      <ChallengeFriend />
     </div>
   );
 }

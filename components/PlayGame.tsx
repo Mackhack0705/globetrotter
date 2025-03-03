@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Confetti from "react-confetti";
 import { useSearchParams } from "next/navigation";
+import { Input } from "./ui/input";
 
 interface Destination {
     City: string;
@@ -13,7 +14,7 @@ interface Destination {
     Trivia: string[];
 }
 
-export default function Home() {
+export default function PlayGame() {
     const [destination, setDestination] = useState<Destination | null>(null);
     const [userAnswer, setUserAnswer] = useState("");
     const [isCorrect, setIsCorrect] = useState(null);
@@ -68,18 +69,17 @@ export default function Home() {
     }, [invitedBy]);
 
     return (
-        <div style={{ padding: "20px" }}>
-            <h1>Globetrotter Challenge</h1>
+        <div style={{ padding: "20px" }} className="w-1/2 m-auto">
             {inviter && (
                 <p>You were invited by {inviter.username} (Score: {inviter.score})</p>
             )}
             {destination && (
-                <div>
-                    <h2>Guess the Destination!</h2>
+                <div className="flex flex-col gap-2">
+                    <h2 className="text-2xl">Guess the Destination!</h2>
                     <p>{destination['Cryptic Clues'][0]}</p>
                     <p>{destination['Cryptic Clues'][1]}</p>
                     <form onSubmit={handleSubmit}>
-                        <input
+                        <Input
                             type="text"
                             placeholder="Enter your guess"
                             value={userAnswer}

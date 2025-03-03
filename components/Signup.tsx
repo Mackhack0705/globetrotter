@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const RegisterUser = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -40,4 +40,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default Signup;
