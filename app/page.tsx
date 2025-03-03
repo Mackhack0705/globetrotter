@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import PlayGame from "@/components/PlayGame";
 import Signup from "@/components/Signup";
 import ChallengeFriend from "@/components/ChallengeFriend";
 import axios from "axios";
+import dynamic from "next/dynamic";
+const PlayGame = dynamic(() => import("@/components/PlayGame"), {ssr: false});
 
 export default function Home() {
   const searchParams = useSearchParams();
