@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Signup from "@/components/Signup";
 import ChallengeFriend from "@/components/ChallengeFriend";
 import axios from "axios";
-import dynamic from "next/dynamic";
-const PlayGame = dynamic(() => import("@/components/PlayGame"), {ssr: false});
+import PlayGame from "@/components/PlayGame";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -34,7 +33,10 @@ export default function Home() {
       )}
       {
         localStorage.getItem("username")
-        ? <PlayGame />
+        ? 
+        <Suspense fallback={<div>Loading...</div>}>
+          <PlayGame />
+        </Suspense>
         : <Signup />
       }  
       <ChallengeFriend />
